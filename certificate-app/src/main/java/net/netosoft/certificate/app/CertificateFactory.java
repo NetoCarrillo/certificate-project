@@ -34,7 +34,7 @@ public class CertificateFactory{
 		// Load certificate template definition
 		CertificateTemplate certTemplate =
 				dataProvider.readCertificateTemplate(definitionFile);
-		LOGGER.info("Certificates will be placed on {}" + certTemplate.getOutputDir());
+		LOGGER.info("Certificates will be placed on {}", certTemplate.getOutputDir());
 
 		// Load persons
 		List<Person> persons = dataProvider.readPersons(definitionFile);

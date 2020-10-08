@@ -3,6 +3,7 @@ package net.netosoft.certificate.data;
 import net.netosoft.certificate.model.CertificateTemplate;
 import net.netosoft.certificate.model.EmailTemplate;
 import net.netosoft.certificate.model.Person;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -16,9 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class ExcelDataProvider{
@@ -88,16 +87,19 @@ public class ExcelDataProvider{
 			Sheet datatypeSheet = workbook.getSheet(personSheetName);
 			Iterator<Row> iterator = datatypeSheet.iterator();
 
+			List<String> headers = getHeaders(iterator.next());
+
 			int count = 1;
 			while(iterator.hasNext()){
-
 				Row row = iterator.next();
 				
 				Person person = new Person();
+
 				person.setName(row.getCell(0).getStringCellValue());
 				person.setEmail(row.getCell(1).getStringCellValue());
 				person.setSerial(count++);
-				
+				person.setParams(getPersonParams(row, headers));
+
 				persons.add(person);
 			}
 		}catch(IOException ex){
@@ -105,6 +107,24 @@ public class ExcelDataProvider{
 		}
 		
 		return persons;
+	}
+
+	private List<String> getHeaders(Row headerRow){
+		List<String> headers = new ArrayList<>();
+
+		Iterator<Cell> iterator = headerRow.iterator();
+		while(iterator.hasNext()){
+			headers.add(iterator.next().getStringCellValue());
+		}
+		return headers;
+	}
+
+	private Map<String, String> getPersonParams(Row row, List<String> headers){
+		Map<String, String> params = new HashMap<>();
+		for(int i = 2; i < headers.size(); i++){
+			params.put(headers.get(i), row.getCell(i).getStringCellValue());
+		}
+		return params;
 	}
 
 }

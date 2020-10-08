@@ -48,7 +48,7 @@ public class CertificateJasperBuilder implements CertificateBuilder{
 	}
 	
 	private Map<String, Object> toMap(Person person){
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(person.getParams());
 		
 		map.put("nombre", person.getName());
 		map.put("folio", numberFormatter.format(person.getSerial()));

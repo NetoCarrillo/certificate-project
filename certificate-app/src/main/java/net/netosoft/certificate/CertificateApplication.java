@@ -13,7 +13,7 @@ public class CertificateApplication implements CommandLineRunner{
 	private CertificateFactory factory;
 
 	public void run(String... args) throws Exception{
-		factory.main("D:/constancias/debate feminismo/debate.xlsx");
+		factory.sendCertificates("D:/constancias/interprepas/interprepas.xlsx");
 	}
 
 	public static void main(String[] args){
